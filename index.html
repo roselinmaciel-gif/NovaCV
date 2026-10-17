@@ -1,0 +1,163 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NovaCV - Tu currículum con IA</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f5fb;
+      color: #20243a;
+    }
+    header {
+      background: #fff;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 12px #0001;
+    }
+    header h2 { margin: 0; color: #6655e8; }
+    main {
+      max-width: 700px;
+      margin: 35px auto;
+      padding: 20px;
+    }
+    .hero { text-align: center; margin-bottom: 28px; }
+    .hero h1 { font-size: 36px; margin-bottom: 10px; }
+    .hero span { color: #6655e8; }
+    .panel {
+      background: white;
+      padding: 24px;
+      border-radius: 18px;
+      box-shadow: 0 5px 25px #20243a0d;
+    }
+    label {
+      display: block;
+      margin: 16px 0 7px;
+      font-weight: bold;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #d8dbea;
+      border-radius: 9px;
+      font-size: 16px;
+      background: white;
+    }
+    textarea { min-height: 100px; resize: vertical; }
+    button {
+      border: 0;
+      padding: 14px 18px;
+      border-radius: 10px;
+      background: #6655e8;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 18px;
+      width: 100%;
+    }
+    button:disabled { opacity: .6; }
+    #resultado {
+      display: none;
+      margin-top: 22px;
+      padding: 20px;
+      background: #fff;
+      border-radius: 12px;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+    .nota { color: #646b80; font-size: 14px; line-height: 1.5; }
+    footer { text-align: center; padding: 25px; color: #777; }
+  </style>
+</head>
+<body>
+  <header>
+    <h2>✦ NovaCV</h2>
+    <span>Tu futuro comienza aquí</span>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>Crea tu CV <span>con inteligencia</span></h1>
+      <p>Prepara tu currículum y destaca tus habilidades.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Tu información profesional</h2>
+      <form id="cvForm">
+        <label for="nombre">Nombre completo</label>
+        <input id="nombre" required placeholder="Tu nombre">
+
+        <label for="puesto">Trabajo que buscas</label>
+        <input id="puesto" required placeholder="Ej. Atención al cliente">
+
+        <label for="experiencia">Experiencia laboral</label>
+        <textarea id="experiencia" placeholder="Describe tus trabajos anteriores"></textarea>
+
+        <label for="estudios">Estudios</label>
+        <input id="estudios" placeholder="Tu formación académica">
+
+        <label for="habilidades">Habilidades</label>
+        <textarea id="habilidades" placeholder="Ej. Comunicación, organización..."></textarea>
+
+        <button type="submit">Crear mi currículum</button>
+      </form>
+
+      <div id="resultado"></div>
+      <button id="descargar" type="button" style="display:none">
+        Descargar CV en TXT
+      </button>
+      <p class="nota">
+        Esta versión inicial prepara un borrador con tus datos.
+        La generación mediante IA real se conectará en el siguiente paso.
+      </p>
+    </section>
+  </main>
+
+  <footer>NovaCV © 2026 · Tu talento merece oportunidades</footer>
+
+  <script>
+    const form = document.getElementById('cvForm');
+    const resultado = document.getElementById('resultado');
+    const descargar = document.getElementById('descargar');
+    let textoCV = '';
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const nombre = document.getElementById('nombre').value.trim();
+      const puesto = document.getElementById('puesto').value.trim();
+      const experiencia = document.getElementById('experiencia').value.trim();
+      const estudios = document.getElementById('estudios').value.trim();
+      const habilidades = document.getElementById('habilidades').value.trim();
+
+      textoCV = nombre + '\n' + puesto + '\n\nPERFIL PROFESIONAL\n' +
+        'Candidato/a interesado/a en ' + puesto + '.\n\n' +
+        'EXPERIENCIA LABORAL\n' + (experiencia || 'Añade tu experiencia laboral.') +
+        '\n\nFORMACIÓN ACADÉMICA\n' + (estudios || 'Añade tus estudios.') +
+        '\n\nHABILIDADES\n' + (habilidades || 'Añade tus habilidades.');
+
+      resultado.textContent = textoCV;
+      resultado.style.display = 'block';
+      descargar.style.display = 'block';
+    });
+
+    descargar.addEventListener('click', function() {
+      const blob = new Blob([textoCV], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Mi-CV.txt';
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+  </script>
+</body>
+  </html>
+  
